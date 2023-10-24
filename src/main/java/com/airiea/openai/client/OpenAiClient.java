@@ -22,13 +22,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * <a href="https://beta.openai.com/docs/api-reference/">...</a>
  */
-public class OpenAClient {
+public class OpenAiClient {
     private static final String BASE_URL = "https://api.openai.com/";
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
     private final OpenAiApi api;
     private final ExecutorService executorService;
 
-    public OpenAClient(final String token) {
+    public OpenAiClient(final String token) {
         ObjectMapper mapper = new ObjectMapper();
         OkHttpClient client = defaultClient(token);
         Retrofit retrofit = defaultRetrofit(client, mapper);
@@ -41,7 +41,7 @@ public class OpenAClient {
         return new OkHttpClient.Builder()
                 .addInterceptor(new AuthenticationInterceptor(token))
                 .connectionPool(new ConnectionPool(5, 1, TimeUnit.SECONDS))
-                .readTimeout(OpenAClient.DEFAULT_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS)
+                .readTimeout(OpenAiClient.DEFAULT_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS)
                 .build();
     }
 
